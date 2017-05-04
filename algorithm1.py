@@ -2,31 +2,35 @@
 
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
-from class_vis import prettyPicture
+from class_vis1 import prettyPicture
 
-features_train, labels_train, features_test, labels_test = makeTerrainData()
-print(features_train)
-print(labels_train)
+#features_train, labels_train, features_test, labels_test = makeTerrainData()
+import numpy as np
+
+data = np.genfromtxt("yourfile.csv", delimiter=',')
+#print(data)
+
+features_train = data[:,1:3]
+labels_train = data[:,6]
 
 ### the training data (features_train, labels_train) have both "fast" and "slow"
 ### points mixed together--separate them so we can give them different colors
 ### in the scatterplot and identify them visually
-grade_fast = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==0]
-bumpy_fast = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==0]
-grade_slow = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==1]
-bumpy_slow = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==1]
-print(grade_fast)
-print(grade_slow)
+runRate_lose       = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==0]
+powerPlayRuns_lose = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==0]
+runRate_win        = [features_train[ii][0] for ii in range(0, len(features_train)) if labels_train[ii]==1]
+powerPlayRuns_win  = [features_train[ii][1] for ii in range(0, len(features_train)) if labels_train[ii]==1]
 
 #### initial visualization
-plt.xlim(0.0, 1.0)
-plt.ylim(0.0, 1.0)
-plt.scatter(bumpy_fast, grade_fast, color = "b", label="fast")
-plt.scatter(bumpy_slow, grade_slow, color = "r", label="slow")
+plt.xlim(0.0, 90.0)
+plt.ylim(0.0, 15.0)
+plt.scatter(powerPlayRuns_lose, runRate_lose, color = "b", label="lose")
+plt.scatter(powerPlayRuns_win, runRate_win, color = "r", label="win")
 plt.legend()
-plt.xlabel("bumpiness")
-plt.ylabel("grade")
+plt.xlabel("PowerPlayRuns")
+plt.ylabel("RunRate")
 plt.show()
+# plt.savefig("PowerPlayRunsVRunRate1.png")
 ################################################################################
 
 ### your code here!  name your classifier object clf if you want the
@@ -34,6 +38,9 @@ plt.show()
 # from sklearn.naive_bayes import GaussianNB
 # clf = GaussianNB()
 # clf.fit(features_train, labels_train)
+# prettyPicture(clf, features_train, labels_train)
+# plt.show()
+
 # pred = clf.predict(features_test)
 # pred2 = clf.predict([[0.2, 0.2]])
 # pred3 = clf.predict([[0.4, 0.4]])
@@ -43,9 +50,11 @@ plt.show()
 #################################################################################################################################3
 
 ########################    SVM             #######################################################################################
-# from sklearn.svm import SVC
-# clf = SVC(kernel="rbf", C=10000, gamma=1000)
-# clf.fit(features_train, labels_train)
+from sklearn.svm import SVC
+clf = SVC(kernel="rbf", C=10000, gamma=10)
+clf.fit(features_train, labels_train)
+prettyPicture(clf, features_train, labels_train)
+plt.show()
 ###################################################################################################################################
 
 
@@ -63,13 +72,12 @@ plt.show()
 
 
 
-########################    Desicion Tree   ######################################################################################
-from sklearn import tree
-gnb = tree.DecisionTreeClassifier(min_samples_split=10)
-gnb.fit(features_train, labels_train)
-prettyPicture(gnb, features_train, labels_train)
-
-plt.show()
+########################    Desicion Tree - Working Solution  ######################################################################################
+# from sklearn import tree
+# gnb = tree.DecisionTreeClassifier(min_samples_split=5)
+# gnb.fit(features_train, labels_train)
+# prettyPicture(gnb, features_train, labels_train)
+# plt.show()
 ###################################################################################################################################
 
 ### visualization code (prettyPicture) to show you the decision boundary
@@ -91,15 +99,15 @@ plt.show()
 #     print(x, accuracy)
 
 #scores = cross_val_score(clf, iris.data, iris.target)
-#print scores.mean()    
+#print scores.mean()
 
 
 
 
 
 
-try:
-    prettyPicture(clf, features_test, labels_test)
-    print("yes got");
-except NameError:
-    pass
+# try:
+#     prettyPicture(clf, features_test, labels_test)
+#     print("yes got");
+# except NameError:
+#     pass
