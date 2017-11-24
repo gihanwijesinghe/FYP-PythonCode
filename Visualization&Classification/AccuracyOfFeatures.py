@@ -4,6 +4,7 @@ import pandas as pand
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score
 
 def load_data():
    df = pand.read_csv("yourfile1.csv");
@@ -54,21 +55,73 @@ def pset(lst):
     comb = (iter.combinations(lst, l) for l in range(len(lst) + 1))
     return list(iter.chain.from_iterable(comb))
 
-print(features)
 newArray = pset(features)
-print(newArray)
 from sklearn.svm import SVC
 clf = SVC(kernel="rbf", C=10000, gamma=1)
 print("begin feature len", len(newArray))
+myList=[]
+featureArray = []
 
-for num in range(0, len(newArray)-1):  # Second Example
+#for num in range(0, len(newArray)-1):  # Second Example
+
+newArray = pset(features)#creating all possible combinations to array
+for num in range(0, 1000):
+#for num in range(0, len(newArray)):
     print('Combination of :', newArray[num+1], ' number ',  num)
-    features_train = train[np.asarray(newArray[num+1])]
+    featureArray.append(newArray[num+1])
+    features_train = train[np.asarray(newArray[num+1])]#selecting a combination of features
     labels_train = train["result"]
     features_test = test[np.asarray(newArray[num + 1])]
     labels_test = test["result"]
-    clf.fit(features_train, labels_train)
-    predictions = clf.predict(features_test)
-    mse = mean_squared_error(predictions, labels_test)
+    clf.fit(features_train, labels_train)#fitting the data to learner
+    predictions = clf.predict(features_test)#predicting for test data
+    mse = accuracy_score(predictions, labels_test)
+    # mse = mean_squared_error(predictions, labels_test)
+    myList.append(mse)
+
+
     print("heee your done")
     print(mse)
+
+print(myList)
+
+
+mylist1 = list(range(len(myList)))
+print(mylist1)
+
+#### initial visualization
+print(featureArray)
+print(features)
+#plt.xticks(x, my_xticks)
+plt.xlim(0.0, len(myList))
+plt.ylim(0.0, 1.0)
+#plt.scatter(mylist1, myList, color = "b", label="lose")
+plt.plot(mylist1, myList, 'b-',label='Accuracy deviance')
+#plt.scatter(powerPlayRuns_win, runRate_win, color = "r", label="win")
+plt.legend()
+plt.xlabel("possible combinations (1000)")
+plt.ylabel("accuracy")
+plt.show()
+print("asdfasdf")
+
+
+x = mylist1
+y = myList
+#x_ticks_labels = ['jan','feb','mar','apr','may']
+x_ticks_labels = features
+
+fig, ax = plt.subplots()
+fig.subplots_adjust(bottom=0.25)
+ax.plot(x,y)
+
+# Set number of ticks for x-axis
+ax.set_xticks(x)
+# Set ticks labels for x-axis
+ax.set_xticklabels(x_ticks_labels, rotation='vertical', fontsize=10)
+# fig.suptitle('Deviation of Mean Square Error', fontsize=14)
+fig.suptitle('Deviation of accuracy', fontsize=14)
+plt.xlabel("single combinations")
+#plt.ylabel("mean square error")
+plt.ylabel("accuracy")
+plt.show()
+print("doneeee")

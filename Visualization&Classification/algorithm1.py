@@ -1,11 +1,8 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
-from prep_terrain_data import makeTerrainData
-from class_vis1 import prettyPicture
-
-#features_train, labels_train, features_test, labels_test = makeTerrainData()
 import numpy as np
+from class_vis1 import prettyPicture
 
 data = np.genfromtxt("yourfile.csv", delimiter=',')
 #print(data)
@@ -48,11 +45,15 @@ plt.show()
 # print(pred2)
 # print(pred3)
 #################################################################################################################################3
-
+features_test = features_train
 ########################    SVM             #######################################################################################
 from sklearn.svm import SVC
 clf = SVC(kernel="rbf", C=10000, gamma=10)
 clf.fit(features_train, labels_train)
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+
 prettyPicture(clf, features_train, labels_train)
 plt.show()
 ###################################################################################################################################
@@ -67,6 +68,7 @@ plt.show()
 # gnb = GaussianNB()
 # y_pred = gnb.fit(iris.data, iris.target).predict(iris.data)
 # print("Number of mislabeled points out of a total %d points : %d" % (iris.data.shape[0],(iris.target != y_pred).sum()))
+
 
 
 

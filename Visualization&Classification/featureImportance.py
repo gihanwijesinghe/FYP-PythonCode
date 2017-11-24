@@ -1,18 +1,12 @@
 import numpy as np
+from sklearn.ensemble import ExtraTreesClassifier
 
 data = np.genfromtxt("yourfile2.csv", delimiter=',')
-#print(data)
 
-X = data[:,1:12]
-y = data[:,12]
+X = data[:,1:24]
+y = data[:,24]
 
-
-print(X)
-print(y)
-
-# Feature Importance
-from sklearn import metrics
-from sklearn.ensemble import ExtraTreesClassifier
+print(data[0,1:24])
 
 # fit an Extra Trees model to the data
 model = ExtraTreesClassifier()

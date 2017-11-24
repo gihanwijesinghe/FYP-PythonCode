@@ -37,7 +37,7 @@ def prettyPicture(clf, X_test, y_test):
     plt.scatter(grade_sig, bumpy_sig, color="b", label="lose")
     plt.scatter(grade_bkg, bumpy_bkg, color="r", label="win")
     plt.legend()
-    plt.title("Dot balls & Fours using Naive bayes")
+    plt.title("Dot balls & Fours using support vector machine")
     plt.xlabel("Dot Balls")
     plt.ylabel("Fours")
 

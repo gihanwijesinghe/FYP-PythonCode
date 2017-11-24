@@ -1,11 +1,8 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
-from prep_terrain_data import makeTerrainData
-from class_vis1 import prettyPicture
-
-#features_train, labels_train, features_test, labels_test = makeTerrainData()
 import numpy as np
+from class_vis1 import prettyPicture
 
 data = np.genfromtxt("yourfile.csv", delimiter=',')
 #print(data)
